@@ -1,9 +1,10 @@
 package com.reactlibrary;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
+import android.util.Base64;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -25,15 +26,22 @@ public class RNImageConverterModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void convertToPNG(String original, Callback success) {
-    //
-    success.invoke(...);
+  public void getPNG(String original, Callback success) {
+    Bitmap bm = BitmapFactory.decodeFile(original);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+    byte[] byteArrayImage = baos.toByteArray();
+    String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+    success.invoke(encodedImage);
   }
 
   @ReactMethod
-  public void convertToJPEG(String original,  Callback success) {
-    //
-    success.invoke(...);
+  public void getJPEG(String original, Callback success) {
+    Bitmap bm = BitmapFactory.decodeFile(original);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+    byte[] byteArrayImage = baos.toByteArray();
+    String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+    success.invoke(encodedImage);
   }
-    
 }
